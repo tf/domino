@@ -143,4 +143,15 @@ class DominoTest < MiniTest::Unit::TestCase
   def test_callback
     assert_equal 23, Dom::Person.find_by_name("Alice").age
   end
+
+  def test_find_by_with_unconverted_value_for_callback_computed_attribute
+    # passes since find_by_attribute compares with the text value of the capybare node
+    refute_nil Dom::Person.find_by_age("23")
+  end
+
+  def test_find_by_with_converted_value_for_callback_computed_attribute
+    # fails although one could expect that find_by_<attr> takes the same sort
+    # of values that the <attr> method outputs.
+    refute_nil Dom::Person.find_by_age(23)
+  end
 end
